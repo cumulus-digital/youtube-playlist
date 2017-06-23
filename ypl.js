@@ -110,7 +110,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 
 		this.updateSettings = function updateSettings(options) {
 			settings = $.extend({}, settings, options);
-		}
+		};
 
 		function updateState(data) {
 			$.extend(state, data);
