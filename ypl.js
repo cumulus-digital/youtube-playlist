@@ -274,7 +274,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 		}
 
 		init(selector, options);
-	}
+	};
 
 	if ((typeof module !== 'undefined') && module.exports) {
 		module.exports = YPL;
