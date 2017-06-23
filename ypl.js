@@ -108,6 +108,10 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 			'EMPTY_PLAYLIST': 0x000002,
 		};
 
+		this.updateSettings(options) {
+			settings = $.extend({}, settings, options);
+		}
+
 		function updateState(data) {
 			$.extend(state, data);
 			view.update(state);
