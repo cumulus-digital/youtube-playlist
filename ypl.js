@@ -236,6 +236,8 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 					return;
 				}
 
+				settings.element.show();
+
 				if (!settings.debug) {
 					me.log = noop;
 				}
