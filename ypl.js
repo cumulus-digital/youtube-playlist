@@ -55,7 +55,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 				+'		<div class="ypl-video"><div class="ypl-videoWrapper"><div id="ypl-video-player{{ id }}" class="ypl-video-playerContainer"></div></div></div>'
 				+'		<div class="ypl-list">'
 				+'			{% for video of videos %}'
-				+'				<div data-slug="{{ video.slug }}" class="ypl-item {{ video.status != "processed" ? "ypl-hidden" : '' }} {{ video.slug == active ? \'ypl-active\' : \'\' }}">'
+				+'				<div data-slug="{{ video.slug }}" class="ypl-item {{ video.status != "processed" ? "ypl-hidden" : "" }} {{ video.slug == active ? \'ypl-active\' : \'\' }}">'
 				+'					<div class="ypl-thumb">'
 				+'						<img src="{{ video.thumbnail }}" />'
 				+'						<span class="ypl-duration">{{ video.duration }}</span>'
