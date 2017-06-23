@@ -76,6 +76,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 			},
 			player,
 			defaults = {
+				debug: false,
 				element: null,
 				playlist: null,
 				controls: true,
@@ -101,6 +102,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 				}
 			};
 
+		this.log = console.log;
 		this.errors = {
 			'NO_NEW_VIDEOS': 0x000001,
 			'EMPTY_PLAYLIST': 0x000002,
@@ -112,12 +114,12 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 		}
 
 		this.fetchList = function fetchList(){
-			console.log('YPL', 'Fetching playlist.');
+			me.log('YPL', 'Fetching playlist.');
 			var dfd = $.Deferred();
 			$.getJSON(api.playlist(settings.playlist), function gotPlaylist(data) {
 				if (data && data.items.length > 0) {
 					if (data.pageInfo.totalResults === state.videos.length) {
-						console.log('YPL', 'No new videos in playlist.');
+						me.log('YPL', 'No new videos in playlist.');
 						dfd.reject({ error: me.NO_NEW_VIDEOS, message: 'No new videos in playlist.' });
 						return;
 					}
@@ -125,7 +127,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 					data.items.forEach(function(pl) {
 						videos.push(pl.contentDetails.videoId);
 					});
-					console.log('YPL', 'Fetching video list info.');
+					me.log('YPL', 'Fetching video list info.');
 					$.getJSON(api.video(videos), function gotVideos(data) {
 						if (data && data.items.length > 0) {
 							var videos = [];
@@ -155,12 +157,12 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 								});
 							});
 
-							console.log('YPL', 'Updating list.');
+							me.log('YPL', 'Updating list.');
 							updateState({ videos: videos });
 
 							dfd.resolve();
 						} else {
-							console.log('YPL', 'No videos returned!');
+							me.log('YPL', 'No videos returned!');
 							dfd.reject({ error: me.EMPTY_PLAYLIST, message: 'No videos returned.' });
 						}
 					});
@@ -173,20 +175,20 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 
 		this.playVideo = function playVideo(slug, autoplay) {
 			if ( ! slug) {
-				console.log('YPL', 'No slug provided!');
+				me.log('YPL', 'No slug provided!');
 				return;
 			}
-			console.log('YPL', 'Playing video', slug);
+			me.log('YPL', 'Playing video', slug);
 			if (me.player) {
-				console.log('YPL', 'Using existing player', me.player);
+				me.log('YPL', 'Using existing player', me.player);
 				me.player.loadVideoById(slug);
 			} else {
-				console.log('YPL', 'Generating player');
+				me.log('YPL', 'Generating player');
 				me.player = new YT.Player('ypl-video-player' + state.id, {
 					videoId: slug,
 					events: {
 						onStateChange: function onStateChange(e) {
-							console.log('YPL', 'State Change', e);
+							me.log('YPL', 'State Change', e);
 							if (e.target.getPlayerState() == 0 && settings.chainVideos) {
 								me.playNext();
 							}
@@ -207,14 +209,13 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 						playsinline: 1
 					}
 				});
-				console.log(me.player);
 			}
 			updateState({ active: slug });
 		}
 
 		this.playNext = function() {
 			var next = settings.element.find('.ypl-active ~ .ypl-item:first');
-			console.log('YPL', 'Playing next item');
+			me.log('YPL', 'Playing next item');
 			if (next.length) {
 				me.playVideo(next.attr('data-slug'));
 			}
@@ -224,14 +225,18 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 			$.getScript('https://www.youtube.com/iframe_api', function(){
 				settings = $.extend({}, defaults, options);
 				if (settings.API_KEY.length < 1) {
-					console.log('YPL', 'Missing API_KEY in settings.', settings);
+					me.log('YPL', 'Missing API_KEY in settings.', settings);
 					return;
 				}
 				API_KEY = settings.API_KEY;
 				settings.element = $(selector);
 				if (settings.element.length < 1) {
-					console.log('YPL', 'Could not find element', settings);
+					me.log('YPL', 'Could not find element', settings);
 					return;
+				}
+
+				if (!settings.debug) {
+					me.log = noop;
 				}
 
 				// find any existing YPL instances
