@@ -51,7 +51,7 @@
 		cursor: pointer;
 		overflow: hidden;
 		padding: 8px 10px;
-		border-bottom: 2px groove #333;
+		border-bottom: 2px groove #555;
 	}
 		.ypl-item:list-child { border-bottom: 0; }
 		.ypl-item:hover {
@@ -60,7 +60,6 @@
 	.ypl-active {
 		background: #666;
 		border-left: 3px solid #fff;
-		border-bottom-color: #666;
 	}
 		.ypl-thumb {
 			float: left;
