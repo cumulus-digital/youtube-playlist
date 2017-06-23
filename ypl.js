@@ -120,7 +120,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 				if (data && data.items.length > 0) {
 					if (data.pageInfo.totalResults === state.videos.length) {
 						me.log('YPL', 'No new videos in playlist.');
-						dfd.reject({ error: me.NO_NEW_VIDEOS, message: 'No new videos in playlist.' });
+						dfd.reject({ error: me.errors.NO_NEW_VIDEOS, message: 'No new videos in playlist.' });
 						return;
 					}
 					var videos = [];
@@ -163,11 +163,12 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 							dfd.resolve();
 						} else {
 							me.log('YPL', 'No videos returned!');
-							dfd.reject({ error: me.EMPTY_PLAYLIST, message: 'No videos returned.' });
+							dfd.reject({ error: me.errors.EMPTY_PLAYLIST, message: 'No videos returned.' });
 						}
 					});
 				} else {
-					dfd.reject({ error: me.EMPTY_PLAYLIST, message: 'Playlist has no videos.' });
+					me.log('YPL', 'Playlist has no videos.');
+					dfd.reject({ error: me.errors.EMPTY_PLAYLIST, message: 'Playlist has no videos.' });
 				}
 			});
 			return dfd.promise();
@@ -262,6 +263,8 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 							settings.autoplay
 						);
 					}
+				}).fail(function(err){
+					settings.events.onError.call(me, err);
 				});
 
 				if (settings.refreshList) {
