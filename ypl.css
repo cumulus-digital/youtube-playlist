@@ -1,0 +1,85 @@
+.ypl-canvas {
+	background: #333;
+	font-size: 11.5px;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+.ypl-canvas * { box-sizing: border-box; }
+.ypl-video {
+	height: 100%;
+	position: relative;
+	width: 75%;
+}
+	@media only screen and (max-width: 992px) {
+		.ypl-video {
+			width: 100%;
+		}
+	}
+	.ypl-videoWrapper {
+		height: 0;
+		overflow: hidden;
+		max-width: 100%;
+		padding-bottom: 56.25%;
+		position: relative;
+	}
+		.ypl-videoWrapper iframe {
+			height: 100%;
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+		}
+.ypl-list {
+	height: 100%;
+	overflow: auto;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 25%;
+}
+	@media only screen and (max-width: 992px) {
+		.ypl-list {
+			position: relative;
+			width: 100%;
+		}
+	}
+	.ypl-item {
+		background: #333;
+		color: #fff;
+		cursor: pointer;
+		overflow: hidden;
+		padding: 8px 10px;
+		border-bottom: 2px groove #333;
+	}
+		.ypl-item:list-child { border-bottom: 0; }
+		.ypl-item:hover {
+			background: #444;
+		}
+	.ypl-active {
+		background: #666;
+		border-left: 3px solid #fff;
+		border-bottom-color: #666;
+	}
+		.ypl-thumb {
+			float: left;
+			padding-right: 5px;
+			position: relative;
+		}
+			.ypl-thumb img {
+				display: block;
+				max-width: 100px;
+				border: 1px solid #000;
+			}
+		.ypl-duration {
+			background: #000;
+			background: rgba(0,0,0,0.6);
+			bottom: 1%;
+			color: #fff;
+			color: rgba(255,255,255,0.8);
+			font-size: 10px;
+			padding: 2px 4px;
+			position: absolute;
+			right: 5px;
+			z-index: 2;
+		}
