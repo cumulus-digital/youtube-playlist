@@ -1,6 +1,7 @@
 .ypl-canvas {
 	background: #333;
 	font-size: 11.5px;
+	line-height: 1.1;
 	overflow: hidden;
 	position: relative;
 	width: 100%;
