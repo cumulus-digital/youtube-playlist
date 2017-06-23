@@ -58,6 +58,7 @@
 		.ypl-item:hover {
 			background: #444;
 		}
+	.ypl-hidden { display: none; }
 	.ypl-active {
 		background: #666;
 		border-left: 3px solid #fff;

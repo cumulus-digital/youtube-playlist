@@ -55,7 +55,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 				+'		<div class="ypl-video"><div class="ypl-videoWrapper"><div id="ypl-video-player{{ id }}" class="ypl-video-playerContainer"></div></div></div>'
 				+'		<div class="ypl-list">'
 				+'			{% for video of videos %}'
-				+'				<div data-slug="{{ video.slug }}" class="ypl-item {{ video.slug == active ? \'ypl-active\' : \'\' }}">'
+				+'				<div data-slug="{{ video.slug }}" class="ypl-item {{ video.status != "processed" ? "ypl-hidden" : '' }} {{ video.slug == active ? \'ypl-active\' : \'\' }}">'
 				+'					<div class="ypl-thumb">'
 				+'						<img src="{{ video.thumbnail }}" />'
 				+'						<span class="ypl-duration">{{ video.duration }}</span>'
@@ -98,7 +98,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 					return api.base + 'playlistItems?playlistId=' + id + '&key=' + API_KEY + '&maxResults=50&part=contentDetails';
 				},
 				video: function(videoIds) {
-					return api.base + 'videos?id=' + videoIds.join(',') + '&key=' + API_KEY + '&maxResults=50&part=snippet,contentDetails';
+					return api.base + 'videos?id=' + videoIds.join(',') + '&key=' + API_KEY + '&maxResults=50&part=snippet,contentDetails,status';
 				}
 			};
 
@@ -152,6 +152,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 								if (s){ time += s;} else { time += '00';}
 
 								videos.push({
+									status: video.status.uploadStatus,
 									title: video.snippet.title,
 									slug: video.id,
 									link: 'http://www.youtube.com/watch?v=' + video.id,
@@ -219,7 +220,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 		}
 
 		this.playNext = function() {
-			var next = settings.element.find('.ypl-active ~ .ypl-item:first');
+			var next = settings.element.find('.ypl-active ~ .ypl-item:visible:first');
 			me.log('YPL', 'Playing next item');
 			if (next.length) {
 				me.playVideo(next.attr('data-slug'));
@@ -265,7 +266,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 						settings.element.show();
 						if ( ! state.active) {
 							me.playVideo(
-								settings.element.find('.ypl-item:first').attr('data-slug'),
+								settings.element.find('.ypl-item:visible:first').attr('data-slug'),
 								settings.autoplay
 							);
 						}
