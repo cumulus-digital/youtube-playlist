@@ -236,8 +236,6 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 					return;
 				}
 
-				settings.element.show();
-
 				if (!settings.debug) {
 					me.log = noop;
 				}
@@ -258,19 +256,26 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 					this.playVideo(el.getAttribute('data-slug'));
 				}).bind(me));
 
-				me.fetchList().then(function(){
-					if ( ! state.active) {
-						me.playVideo(
-							settings.element.find('.ypl-item:first').attr('data-slug'),
-							settings.autoplay
-						);
-					}
-				}).fail(function(err){
-					settings.events.onError.call(me, err);
-				});
+				function loadVids() {
+					me.fetchList().then(function(){
+						settings.element.show();
+						if ( ! state.active) {
+							me.playVideo(
+								settings.element.find('.ypl-item:first').attr('data-slug'),
+								settings.autoplay
+							);
+						}
+					}).fail(function(err){
+						settings.events.onError.call(me, err);
+					});
+				}
+				loadVids();
 
 				if (settings.refreshList) {
-					settings.refreshTimer = setInterval(me.fetchList, settings.refreshList * 1000);
+					settings.refreshTimer = setInterval(
+						loadVids,
+						settings.refreshList * 1000
+					);
 				}
 			});
 		}
