@@ -67,7 +67,6 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 				+'	</div>'
 				+'</div>',
 			noop = function(){},
-			API_KEY = null,
 			view,
 			state = {
 				id: 0,
@@ -76,6 +75,7 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 			},
 			player,
 			defaults = {
+				API_KEY: null,
 				debug: false,
 				element: null,
 				playlist: null,
@@ -95,10 +95,10 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 			api = {
 				base: 'https://www.googleapis.com/youtube/v3/',
 				playlist: function(id) {
-					return api.base + 'playlistItems?playlistId=' + id + '&key=' + API_KEY + '&maxResults=50&part=contentDetails';
+					return api.base + 'playlistItems?playlistId=' + id + '&key=' + settings.API_KEY + '&maxResults=50&part=contentDetails';
 				},
 				video: function(videoIds) {
-					return api.base + 'videos?id=' + videoIds.join(',') + '&key=' + API_KEY + '&maxResults=50&part=snippet,contentDetails,status';
+					return api.base + 'videos?id=' + videoIds.join(',') + '&key=' + settings.API_KEY + '&maxResults=50&part=snippet,contentDetails,status';
 				}
 			};
 
@@ -230,11 +230,11 @@ if(t>=0){var r=this._generatedMappings[t];if(r.generatedLine===u.generatedLine){
 		function init(selector, options) {
 			$.getScript('https://www.youtube.com/iframe_api', function(){
 				settings = $.extend({}, defaults, options);
-				if (settings.API_KEY.length < 1) {
-					me.log('YPL', 'Missing API_KEY in settings.', settings);
+				if ( ! w.YPL_API_KEY && settings.API_KEY.length < 1) {
+					me.log('YPL', 'No YouTube API key defined.', settings);
 					return;
 				}
-				API_KEY = settings.API_KEY;
+				settings.API_KEY = w.YPL_API_KEY || settings.API_KEY;
 				settings.element = $(selector);
 				if (settings.element.length < 1) {
 					me.log('YPL', 'Could not find element', settings);

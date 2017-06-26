@@ -20,6 +20,8 @@ var myEmbed = new YPL('#container', {
 });
 ```
 
+A global YouTube API key can be set by assigning it to `window.YPL_API_KEY` and omitting it from the embed instantiation.
+
 ## Options
 
 ```javascript
